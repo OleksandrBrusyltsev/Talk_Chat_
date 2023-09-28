@@ -1,6 +1,6 @@
 # Talk Chat: Real-time Chat Web Application
 ## Introduction
-#### **Talk Chat is a web application developed using the Django framework, enabling users to communicate in real-time. Utilizing WebSockets, messages are sent and received instantly.**
+#### **Talk Chat is a web application developed using the Django framework, enabling users to communicate in real-time. Utilizing WebSockets(Django Channels), messages are sent and received instantly.**
 
 ### API Documentation
 **API documentation is available on the local server or online at [Talk Chat API Docs](https://talk-chat6.onrender.com/api/docs/). Please note that the first request on Render may take longer than usual, so the site may load slower if this is your first visit.**
@@ -18,7 +18,7 @@
 ## Authentication
 + User Registration with data validation.
 + User Login with credential verification.
-+ UChannels and Chats
++ Channels and Chats
 + Channel Creation for group conversations.
 + Channel Selection for communication.
 + Instant Text Messaging.
