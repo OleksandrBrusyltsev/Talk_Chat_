@@ -4,7 +4,7 @@ from django.contrib import admin
 from django.contrib import admin
 
 from authentication.models import CustomUser
-from channels.models import Channel
+from channels_main.models import Channel
 
 # Register your models here.
 admin.site.register(CustomUser)

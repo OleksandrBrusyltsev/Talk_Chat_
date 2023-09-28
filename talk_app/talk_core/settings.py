@@ -19,6 +19,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -38,6 +39,7 @@ ALLOWED_HOSTS = ['*', ]
 # Application definition
 
 INSTALLED_APPS = [
+    'daphne',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -49,22 +51,22 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     "corsheaders",
     'django_rest_passwordreset',
-    'channel',
-    "daphne",
+    'channels',
 
-
-        #swagger
+    #swagger
     'drf_spectacular',
 
-        #services for photo
+    #services for photo
     'cloudinary_storage',
     'cloudinary',
 
-       #apps
+    #apps
     'authentication',
-    'channels',
+    'channels_main',
     'profiles',
+    'chat'
 ]
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -96,13 +98,14 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'talk_core.wsgi.application'
+
 ASGI_APPLICATION = 'talk_core.asgi.application'
 
 CHANNEL_LAYERS = {
     'default': {
         'BACKEND': 'channels_redis.core.RedisChannelLayer',
         'CONFIG': {
-            "hosts": [('127.0.0.1', 6379)],
+            "hosts": ['rediss://red-cjvga4vhdsdc73ea6ojg:0gIPGWwz7fVnmCaxVyK8YbQMirRbvxc3@frankfurt-redis.render.com:6379'],
         },
     },
 }
