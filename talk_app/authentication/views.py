@@ -10,9 +10,9 @@ from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import RefreshToken
 from authentication.serializers import UsernameRegisterSerializer, EmailLoginSerializer
 from authentication.utils import send_account_confirmation_email, is_expired_decorator
+from authentication.constans import DEFAULT_PROFILE_PHOTO_FILENAME, FRONT_URL, RESET_PASSWORD_URL, FROM_EMAIL
 from talk_core import settings
 import os
-
 
 # Create your views here.
 class UserRegistrationAPIView(APIView):
@@ -34,8 +34,8 @@ class UserRegistrationAPIView(APIView):
 
         user = CustomUser.objects.create_user(username=username, email=email, is_active=False)
 
-        with open(os.path.join(settings.MEDIA_ROOT, 'default_profile_photo.jpg'), 'rb') as f:
-            user.profile_photo.save('default_profile_photo.jpg', File(f))
+        with open(os.path.join(settings.MEDIA_ROOT, DEFAULT_PROFILE_PHOTO_FILENAME), 'rb') as f:
+            user.profile_photo.save(DEFAULT_PROFILE_PHOTO_FILENAME, File(f))
 
         user.set_password(password)
         user.save()
@@ -60,7 +60,7 @@ def confirm_account(request, user_id):
             user.is_active = True
             user.save()
 
-            return redirect('https://valerka4052.github.io/chat-talk-front/login/')
+            return redirect(FRONT_URL)
         else:
             return Response({"message": "The account has already been confirmed previously."},
                             status=status.HTTP_400_BAD_REQUEST)
@@ -124,9 +124,9 @@ class PasswordResetAPIView(APIView):
 
         reset_token = ResetPasswordToken.objects.create(user=user)
 
-        reset_url = 'https://valerka4052.github.io/chat-talk-front/recover-password/?token=' + reset_token.key
+        reset_url = RESET_PASSWORD_URL + reset_token.key
         message = f'To reset your password, follow this link: {reset_url}'
-        from_email = 'talk.team.challenge@gmail.com'
+        from_email = FROM_EMAIL
         to_email = email
         send_mail('Password Reset', message, from_email, [to_email])
 

@@ -14,6 +14,7 @@ from pathlib import Path
 import os
 import cloudinary
 import dj_database_url
+from django.conf.global_settings import DATABASES
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -101,11 +102,13 @@ WSGI_APPLICATION = 'talk_core.wsgi.application'
 
 ASGI_APPLICATION = 'talk_core.asgi.application'
 
+REDIS_HOST = os.getenv("REDIS_HOST")
+
 CHANNEL_LAYERS = {
     'default': {
         'BACKEND': 'channels_redis.core.RedisChannelLayer',
         'CONFIG': {
-            "hosts": ['rediss://red-cjvga4vhdsdc73ea6ojg:0gIPGWwz7fVnmCaxVyK8YbQMirRbvxc3@frankfurt-redis.render.com:6379'],
+            "hosts": [REDIS_HOST],   # main host
         },
     },
 }
@@ -114,14 +117,14 @@ CHANNEL_LAYERS = {
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',  # test local db
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',  # test local db
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
 
-# DATABASES['default'] = dj_database_url.parse(os.getenv('DATABASE_URL'))  # main DB
+DATABASES['default'] = dj_database_url.parse(os.getenv('DATABASE_URL'))  # main DB
 
 
 # Password validation
@@ -206,7 +209,7 @@ SIMPLE_JWT = {
     "JTI_CLAIM": "jti",
 
     "SLIDING_TOKEN_REFRESH_EXP_CLAIM": "refresh_exp",
-    "SLIDING_TOKEN_LIFETIME": timedelta(minutes=200),
+    "SLIDING_TOKEN_LIFETIME": timedelta(minutes=15),
     "SLIDING_TOKEN_REFRESH_LIFETIME": timedelta(days=1),
 
     "TOKEN_OBTAIN_SERIALIZER": "rest_framework_simplejwt.serializers.TokenObtainPairSerializer",

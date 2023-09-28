@@ -1,0 +1,141 @@
+<!--<!DOCTYPE html>-->
+<!--<html>-->
+<!--<head>-->
+<!--    <meta charset="utf-8"/>-->
+<!--    <title>Chat Rooms</title>-->
+<!--</head>-->
+<!--<body>-->
+<!--    What chat room would you like to enter?<br>-->
+<!--    <input id="room-name-input" type="text" size="100"><br>-->
+<!--    <input id="room-name-submit" type="button" value="Enter">-->
+
+<!--    <script>-->
+<!--        document.querySelector('#room-name-input').focus();-->
+<!--        document.querySelector('#room-name-input').onkeyup = function(e) {-->
+<!--            if (e.keyCode === 13) {  // enter, return-->
+<!--                document.querySelector('#room-name-submit').click();-->
+<!--            }-->
+<!--        };-->
+
+<!--        document.querySelector('#room-name-submit').onclick = function(e) {-->
+<!--            var roomName = document.querySelector('#room-name-input').value;-->
+<!--            window.location.pathname = '/chat/' + roomName + '/';-->
+<!--        };-->
+<!--    </script>-->
+<!--</body>-->
+<!--</html>-->
+
+
+
+
+<!--<!DOCTYPE html>-->
+<!--<html>-->
+<!--<head>-->
+<!--    <meta charset='utf-8'>-->
+<!--    <meta http-equiv='X-UA-Compatible' content='IE=edge'>-->
+<!--    <title>Lobby</title>-->
+<!--    <meta name='viewport' content='width=device-width, initial-scale=1'>-->
+<!--</head>-->
+<!--<body>-->
+<!--    <h1>Lets chat!</h1>-->
+
+<!--    <form id="form">-->
+<!--        <input type="text" id="messageInput" name="message"/>-->
+<!--        <button type="submit">Send</button>-->
+<!--    </form>-->
+
+<!--    <div id="messages"></div>-->
+
+<!--    <script type="text/javascript">-->
+<!--        // Замените channel_id на актуальный ID канала-->
+<!--        let token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjk1NzUwNDg2LCJpYXQiOjE2OTU3Mzg0ODYsImp0aSI6IjFkMTY4NTRlZGRkMjQzNGQ5MTg1Y2I4ZmRmN2JlMGNjIiwidXNlcl9pZCI6N30.hjcb1eauFgxGlE-o9d6I6nf_QWdn9gESqfFMO4yy06U";-->
+<!--        let url = `ws://${window.location.host}/ws/chat/?token=${token}`;-->
+
+
+<!--        const chatSocket = new WebSocket(url);-->
+
+<!--        chatSocket.onmessage = function(e) {-->
+<!--            let data = JSON.parse(e.data);-->
+<!--            console.log('Data:', data);-->
+
+<!--            if(data.type === 'sender') {  // Изменено на 'sender', чтобы соответствовать вашему бэкенду-->
+<!--                let messages = document.getElementById('messages');-->
+<!--                messages.insertAdjacentHTML('beforeend', `<div>-->
+<!--                                        <p>${data.message}</p>-->
+<!--                                    </div>`);-->
+<!--            }-->
+<!--        };-->
+
+<!--        let form = document.getElementById('form');-->
+<!--        form.addEventListener('submit', (e) => {-->
+<!--            e.preventDefault();-->
+<!--            let messageInput = document.getElementById('messageInput');-->
+<!--            let message = messageInput.value;-->
+<!--            chatSocket.send(JSON.stringify({-->
+<!--                'message': message,-->
+<!--                'type': 'send_message'  // Тип сообщения, который ваш бэкенд ожидает-->
+<!--            }));-->
+<!--            form.reset();-->
+<!--        });-->
+<!--    </script>-->
+<!--</body>-->
+<!--</html>-->
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>Lobby</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+</head>
+<body>
+    <h1>Lets chat!</h1>
+
+    <form id="form">
+        <input type="text" id="messageInput" name="message"/>
+        <button type="submit">Send</button>
+    </form>
+
+    <div id="messages"></div>
+
+    <script type="text/javascript">  //FOR TEST ONLY  WEB - SOCKETS
+        let channel_id = "3";
+        let token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjk1NzU1MjM2LCJpYXQiOjE2OTU3NDMyMzYsImp0aSI6ImY2ODMwOTE4NzlmNzQ3ZWRiNjFiZWI1Y2M0ZTEwNWJlIiwidXNlcl9pZCI6N30.P7RYz697L3N8F0XNWBVvGzuHwR0_Pk3pYd_z2fYanFs";
+       let url = `ws://${window.location.host}/ws/chat/?channel_id=${channel_id}&token=${token}`;
+
+
+
+        const chatSocket = new WebSocket(url);
+
+
+
+
+        function appendMessage(data) {
+            let messages = document.getElementById('messages');
+            messages.insertAdjacentHTML('beforeend', `<div>
+                                       <p>${data.message}</p>
+                                    </div>`);
+        }
+
+        chatSocket.onmessage = function(e) {
+            let data = JSON.parse(e.data);
+            console.log('Data:', data);
+
+            appendMessage(data);
+        };
+
+        let form = document.getElementById('form');
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            let messageInput = document.getElementById('messageInput');
+            let message = messageInput.value;
+            chatSocket.send(JSON.stringify({
+                'message': message
+            }));
+            form.reset();
+        });
+    </script>
+</body>
+</html>
