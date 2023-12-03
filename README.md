@@ -62,6 +62,3 @@ After this, the web application will be accessible at http://127.0.0.1:8000/.
 #
 
 
-
-### Author
-## Oleksandr Brusyltsev - [LinkenIn](https://www.linkedin.com/in/oleksandr-brusyltsev/)
